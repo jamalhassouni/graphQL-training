@@ -12,9 +12,15 @@ const {
 
 //dummy data 
  var books = [
-   {name:'Name of the Wind',genre:'Fantasy',id:"1"},
-   {name:'The Final Empire',genre:'Fantasy',id:"2"},
-   {name:'The Long Earth',genre:'Sci-Fi',id:"3"},
+   {name:'Name of the Wind',genre:'Fantasy',id:"1",authorId:"1"},
+   {name:'The Final Empire',genre:'Fantasy',id:"2",authorId:"2"},
+   {name:'The Long Earth',genre:'Sci-Fi',id:"3",authorId:"1"},
+   {name:'Learn PHP',genre:'Programming',id:"4",authorId:"3"},
+   {name:'You Don\'t Know Js',genre:'Programming',id:"5",authorId:"5"},
+   {name:'React js',genre:'Programming',id:"6",authorId:"4"},
+   {name:'React Native For You',genre:'Programming',id:"7",authorId:"4"},
+   {name:'Hello Py',genre:'Programming',id:"8",authorId:"2"},
+   {name:'Laravel Tuto',genre:'Programming',id:"9",authorId:"3"},
  ];
 
 var authors = [
@@ -30,7 +36,15 @@ const BookType = new GraphQLObjectType({
    fields:() => ({
    	id:{type:GraphQLID},
    	name:{type:GraphQLString},
-   	genre:{type:GraphQLString}
+   	genre:{type:GraphQLString},
+   	author:{
+   		type:AuthorType,
+   		resolve(parent,args){
+   			console.log(parent);
+   			// search for id in parent (books) author id 
+   			return _.find(authors,{id:parent.authorId});
+   		}
+   	}
    })
 }); 
 
