@@ -5,7 +5,8 @@ const {
 	GraphQLObjectType,
     GraphQLString, 
     GraphQLSchema,
-    GraphQLID
+    GraphQLID,
+    GraphQLInt
 
 } = graphql;
 
@@ -16,7 +17,13 @@ const {
    {name:'The Long Earth',genre:'Sci-Fi',id:"3"},
  ];
 
-
+var authors = [
+    {name:"Patrick Rothfuss",age:44,id:"1"},
+    {name:"Brandon Sanderson",age:25,id:"2"},
+    {name:"Terry Pratchet",age:66,id:"3"},
+    {name:"Hary Inderson",age:58,id:"4"},
+    {name:"Brad Kerly",age:32,id:"5"},
+];
 
 const BookType = new GraphQLObjectType({
    name:"Book",
@@ -26,6 +33,15 @@ const BookType = new GraphQLObjectType({
    	genre:{type:GraphQLString}
    })
 }); 
+
+const AuthorType = new GraphQLObjectType({
+  name:"Author",
+  fields:() =>({
+  	id:{type:GraphQLID},
+  	name:{type:GraphQLString},
+  	age:{type:GraphQLInt}
+  })
+});
 
 const RootQuery = new GraphQLObjectType({
 	name:'RootQueryType',
@@ -37,6 +53,13 @@ const RootQuery = new GraphQLObjectType({
 				//code to get data from db / other source
              return _.find(books,{id:args.id});
 
+			}
+		},
+		author:{
+			type:AuthorType,
+			args:{id:{type:GraphQLID}},
+			resolve(parent,args){
+				return _.find(authors,{id:args.id});
 			}
 		}
 	}
